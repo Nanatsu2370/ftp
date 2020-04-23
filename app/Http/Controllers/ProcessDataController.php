@@ -14,8 +14,6 @@ class ProcessDataController extends Controller
     //Handles GET request, adds the current file in the queue, starts the work.
     public function index()
     {
-        /*$category = factory(Category::class)->create();
-        return $category;*/
         $this->dispatch(new Processxlsx);
         return "Done!";
     }

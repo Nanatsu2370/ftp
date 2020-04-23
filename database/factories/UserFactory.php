@@ -4,32 +4,39 @@
 
 use App\Category;
 use App\CustomClasses\CategoryBuilder;
-use App\User;
-use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+//DefineAs was deprected for this version so that is a workaround
 
-$factory->define(User::class, function (Faker $faker) {
+/* Generates a Root */
+$factory->state(Category::class,'root',function(){
+    $category = CategoryBuilder::generateCategory(Str::random(5), "");
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
+        'content' => $category->content,
+        'lft' => $category->lft,
+        'rgt' => $category->rgt,
+        'parent_Id' => $category->parent_Id
     ];
 });
 
-$factory->define(Category::class,function(){
+/* Generates a child node */
+$factory->state(Category::class,"node",function(){
     $randomParent = Category::all()->random();
+    $category = CategoryBuilder::generateCategory(Str::random(5),$randomParent->content);
+    return[
+        'content'=>$category->content,
+        'lft'=>$category->lft,
+        'rgt'=>$category->rgt,
+        'parent_Id'=>$category->parent_Id
+    ];
+});
 
+/* Default values. */
+$factory->define(Category::class,function(){
+    return [
+        'content' => "",
+        'lft' => -2,
+        'rgt' => -1,
+        'parent_Id' => -1
+    ];
 });
