@@ -3,23 +3,21 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Swift_SmtpTransport;
 
 class ProcessingDone extends Mailable
 {
     use Queueable, SerializesModels;
-
+    protected $filename;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($filename)
     {
-        //
+        $this->filename=$filename;
     }
 
     /**
@@ -29,6 +27,6 @@ class ProcessingDone extends Mailable
      */
     public function build()
     {
-        return $this->html('Processing Done!');
+        return $this->html(sprintf("%s dosyası işlendi", $this->filename));
     }
 }

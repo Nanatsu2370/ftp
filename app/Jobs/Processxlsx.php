@@ -17,6 +17,7 @@ class Processxlsx implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $file;
+    protected $filename;
     /**
      * Create a new job instance.
      *
@@ -26,8 +27,8 @@ class Processxlsx implements ShouldQueue
     {
         $ftp_basePath = "categories";
         $files = FTP::getAllFiles($ftp_basePath);
-        $file = File::getRecentURL($files,$ftp_basePath);
-        $this->file = FTP::buildFTPUrl($file);
+        $this->filename = File::getRecentURL($files,$ftp_basePath);
+        $this->file = FTP::buildFTPUrl($this->filename);
     }
 
     /**
@@ -47,6 +48,6 @@ class Processxlsx implements ShouldQueue
                 CategoryBuilder::insert($data["content"], $data["parentText"]);
             }
         }
-        Mail::to(env("MAIL_TO"))->queue(new ProcessingDone);
+        Mail::to(env("MAIL_TO"))->queue(new ProcessingDone($this->filename));
     }
 }
