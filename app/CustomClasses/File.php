@@ -26,7 +26,7 @@ class File
      * @param string $base Base path of the files for auto-combining.
      * @return string
      * */
-    protected static function getRecentURL($files,$base="")
+    static function getRecentURL($files,$base="")
     {
         $recentFile = File::getNewest($files);
         return File::combinePath($base, $recentFile);

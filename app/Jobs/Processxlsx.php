@@ -49,6 +49,6 @@ class Processxlsx implements ShouldQueue
                 CategoryBuilder::insert($data["content"], $data["parentText"]);
             }
         }
-        Mail::to(env("MAIL_TO"))->queue(new ProcessingDone($this->filename));
+        //Mail::to(env("MAIL_TO"))->queue(new ProcessingDone($this->filename));
     }
 }
