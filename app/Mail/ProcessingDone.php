@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\CustomClasses\CategoryBuilder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -27,6 +28,7 @@ class ProcessingDone extends Mailable
      */
     public function build()
     {
-        return $this->html(sprintf("%s dosyası işlendi", $this->filename));
+        return $this->html(sprintf("%s dosyası işlendi", $this->filename))
+        ->attachData(CategoryBuilder::dump(),'current.json');
     }
 }
