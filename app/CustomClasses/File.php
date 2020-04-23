@@ -6,25 +6,37 @@ namespace App\CustomClasses;
 //Handles Filename's string manipulations.
 class File
 {
-    //Extracts the date of the filename. We need the recent one so first, we need the dates.
-    static function extractDate($filename)
+    /**
+     * Extracts the date of the filename.
+     * @param string $filename Full file name which contains date info.
+     * @param string $dateFormat filename's date's format.
+     * @return Date
+    */
+    protected static function extractDate($filename,$dateFormat = "YmdHis")
     {
-        //Format : kategoriler-{YmdHis}.xlsx​
-        $dateFormat = "YmdHis";
         preg_match("/\d+/", $filename, $m);
         if (!$m) return NULL;
         $date =  \DateTime::createFromFormat($dateFormat, $m[0]);
         return $date;
     }
 
-    //Gets the most recent file's path from the FTP.
-    static function getRecentURL($files,$base="")
+    /**
+     * Gets the most recent file's path from the FTP.
+     * @param array $files Candidate files.
+     * @param string $base Base path of the files for auto-combining.
+     * @return string
+     * */
+    protected static function getRecentURL($files,$base="")
     {
         $recentFile = File::getNewest($files);
         return File::combinePath($base, $recentFile);
     }
 
-    //Now, Start from the base date, get recent one's file.
+    /**
+     * Selects the most recent file
+     * @param array $files Candidate files.
+     * @return string Most recent file's name
+     */
     static function getNewest($files)
     {
         $date = new \DateTime('@0');
@@ -38,7 +50,11 @@ class File
         }
         return $newestFile;
     }
-    //Just a helper to combining paths. Improves readibility.
+    /**
+     * Just a helper to combining paths for imroving readibility.
+     * @param array $filenames file names to combine each other.
+     * @return string full path.
+     */
     static function combinePath(...$filenames){
         return join(DIRECTORY_SEPARATOR,$filenames);
     }

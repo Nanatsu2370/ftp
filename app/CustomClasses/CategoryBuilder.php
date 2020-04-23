@@ -6,7 +6,6 @@ use App\Category;
  * A Builder class for adding categories.
  * //? Maybe we should merge it into the models.
  *
-
 */
 class CategoryBuilder
 {

@@ -5,16 +5,22 @@ namespace App\CustomClasses;
 //Excel functions, uses SimpleXLSX to read.
 class Excel
 {
-    //Returns all rows of the xlsx file, specified on parameter.
-    static function getRows($url)
+    /**
+     * Get All rows from xlsx path.
+     * @return xlsx->rows
+     */
+    static function getRows($path)
     {
-        $xlsx = new \SimpleXLSX($url);
+        $xlsx = new \SimpleXLSX($path);
         if (!$xlsx->success())
             dd("Error:" . $xlsx->error());
 
         return $xlsx->rows();
     }
-    //Seperates a xlsx row data to its contents and parent texts, for each cell.
+    /**
+     * Seperates a xlsx row data to its contents and parent texts, for each cell.
+     * @return array(content,parentText)
+     */
     static function getRowData($row)
     {
         $rowData = array();

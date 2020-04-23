@@ -13,7 +13,7 @@ class ProcessingDone extends Mailable
     protected $filename;
     /**
      * Create a new message instance.
-     *
+     * @param string $filename File's name to be processed. Needed for the message body.
      * @return void
      */
     public function __construct($filename)
