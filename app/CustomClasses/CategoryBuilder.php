@@ -5,11 +5,14 @@ use App\Category;
 /*
  * A Builder class for adding categories.
  * //? Maybe we should merge it into the models.
- *
 */
 class CategoryBuilder
 {
-    //Insertion of a root node. Has a few settings, then regular node insertion.
+    /**
+     * Generation of a root node. Calculating different left as it do not have a parent
+     * @param string $content Content of the node
+     * @return Category
+     * */
     private static function getAsRoot($content)
     {
         //last available space for new root.
@@ -22,8 +25,14 @@ class CategoryBuilder
 
         return Category::init($content,$new_left, 0);
     }
-    //Basic insertion command. Checks the node is root, aligns the other node's values.
-    static function generateCategory($content, $parentText)
+
+    /**
+     * Generates a new category.
+     * @param string $content Node's content.
+     * @param string $parentText Node Parent's text. Default:"" (means it is root)
+     * @return Category
+     */
+    static function generateCategory($content, $parentText="")
     {
         //Node is root? If it isn't, then we need to increment other values.
         if ($parentText == "")
@@ -33,8 +42,14 @@ class CategoryBuilder
         $left = $parentNode->rgt;
         Category::adjustIndexes($left);
         return Category::init($content,$left, $parentNode->node_id);
-
     }
+
+    /**
+     * Inserts a Node.
+     * @param string $content Content of the node.
+     * @param string $parentText Node Parent's text.
+     * @return void
+     */
     static function insert($content, $parentText){
 
         if (!isset($content) || !isset($parentText))
