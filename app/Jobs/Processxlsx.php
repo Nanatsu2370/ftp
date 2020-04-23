@@ -26,7 +26,7 @@ class Processxlsx implements ShouldQueue
     {
         $ftp_basePath = "categories";
         $files = FTP::getAllFiles($ftp_basePath);
-        $file = File::getRecentURL($files);
+        $file = File::getRecentURL($files,$ftp_basePath);
         $this->file = FTP::buildFTPUrl($file);
     }
 
