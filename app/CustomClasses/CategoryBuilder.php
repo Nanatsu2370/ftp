@@ -10,7 +10,7 @@ use App\Category;
 class CategoryBuilder
 {
     //Insertion of a root node. Has a few settings, then regular node insertion.
-    private static function insertRoot($content)
+    private static function getAsRoot($content)
     {
         //last available space for new root.
         $last_root_node = Category::getLastRoot();
@@ -27,7 +27,7 @@ class CategoryBuilder
     {
         //Node is root? If it isn't, then we need to increment other values.
         if ($parentText == "")
-            return self::insertRoot($content);
+            return self::getAsRoot($content);
 
         $parentNode = Category::whereContent($parentText)->first();
         $left = $parentNode->rgt;
