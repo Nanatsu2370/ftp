@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Jobs;
+
 use App\CustomClasses\Excel;
 use App\CustomClasses\CategoryBuilder;
 use App\CustomClasses\File;
