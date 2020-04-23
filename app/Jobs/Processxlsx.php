@@ -3,7 +3,7 @@
 namespace App\Jobs;
 use App\CustomClasses\Excel;
 use App\CustomClasses\CategoryBuilder;
-use App\CustomClasses\FTP_File;
+use App\CustomClasses\File;
 use App\CustomClasses\FTP;
 use App\Mail\ProcessingDone;
 use Illuminate\Bus\Queueable;
@@ -26,7 +26,7 @@ class Processxlsx implements ShouldQueue
     {
         $ftp_basePath = "categories";
         $files = FTP::getAllFiles($ftp_basePath);
-        $file = FTP_File::getRecentURL($files);
+        $file = File::getRecentURL($files);
         $this->file = FTP::buildFTPUrl($file);
     }
 

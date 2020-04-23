@@ -4,7 +4,7 @@ namespace App\CustomClasses;
 
 
 //Handles Filename's string manipulations.
-class FTP_File
+class File
 {
     //Extracts the date of the filename. We need the recent one so first, we need the dates.
     static function extractDate($filename)
@@ -20,8 +20,8 @@ class FTP_File
     //Gets the most recent file's path from the FTP.
     static function getRecentURL($files,$base="")
     {
-        $recentFile = FTP_File::getNewest($files);
-        return FTP_File::combinePath($base, $recentFile);
+        $recentFile = File::getNewest($files);
+        return File::combinePath($base, $recentFile);
     }
 
     //Now, Start from the base date, get recent one's file.
