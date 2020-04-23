@@ -57,4 +57,9 @@ class CategoryBuilder
             self::insertNode($content,$left, $parentNode->node_id);
         }
     }
+
+    static function dump(){
+        $data = Category::all();
+        return $data->toJson(JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+    }
 }
