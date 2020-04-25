@@ -29,6 +29,6 @@ class ProcessingDone extends Mailable
     public function build()
     {
         return $this->html(sprintf("%s dosyası işlendi", $this->filename))
-        ->attachData(Category::dump(),'current.json');
+            ->attachData(Category::dump(),'current.json');
     }
 }
