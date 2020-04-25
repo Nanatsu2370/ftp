@@ -12,10 +12,12 @@ class File
      * @param string $dateFormat filename's date's format.
      * @return Date
     */
-    protected static function extractDate($filename,$dateFormat = "YmdHis")
+    protected static function extractDate($filename)
     {
+        $dateFormat = env("FILE_DATE_FORMAT");
         preg_match("/\d+/", $filename, $m);
         if (!$m) return NULL;
+
         $date =  \DateTime::createFromFormat($dateFormat, $m[0]);
         return $date;
     }
@@ -39,6 +41,7 @@ class File
      */
     static function getNewest($files)
     {
+        //initial date, 1970 Jan. Minimum date for increasing.
         $date = new \DateTime('@0');
 
         foreach ($files as $file) {
