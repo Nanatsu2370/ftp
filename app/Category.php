@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Category extends Model
 {
+    use Notifiable;
     /* Settings */
     protected $table = "category_map";
     protected $primaryKey = 'node_id';
