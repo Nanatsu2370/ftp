@@ -14,8 +14,26 @@ class Category extends Model
     public $timestamps = false;
     protected $attributes = ['parent_Id' => 0];
 
+    private static function calculateLeftRoot(){
+        $last_root_node = self::getLastRoot();
+
+        if (isset($last_root_node))
+            return $last_root_node->rgt + 1;
+        else
+            return 1;
+    }
+    private static function calculateLeft($parentId=0)
+    {
+         if ($parentId == 0)
+            return self::calculateLeftRoot();
+        echo $parentId;
+        $parentNode = Category::find($parentId);
+        return $parentNode->rgt;
+    }
     //Seems like constructor has problems with Eloquent's static calls.
-    static function init($content,$left=1,$parentId=0){
+    static function init($content,$parentId=0){
+        $left = self::calculateLeft($parentId);
+
         $category = new Category;
         $category->content = $content;
         $category->lft = $left;
@@ -23,6 +41,7 @@ class Category extends Model
         $category->parent_Id = $parentId;
         return $category;
     }
+
     static function getLastRoot(){
         return self::where('parent_Id', 0)
             ->orderBy('rgt', 'desc')
@@ -36,5 +55,9 @@ class Category extends Model
     {
         $data = parent::all();
         return $data->toJson(JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
+    public function save(array $options = []){
+        self::adjustIndexes($this->lft);
+        parent::save();
     }
 }

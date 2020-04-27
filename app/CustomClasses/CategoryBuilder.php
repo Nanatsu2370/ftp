@@ -23,7 +23,7 @@ class CategoryBuilder
         else
             $new_left = 1;
 
-        return Category::init($content,$new_left, 0);
+        return Category::init($content, 0);
     }
 
     /**
@@ -40,8 +40,8 @@ class CategoryBuilder
 
         $parentNode = Category::whereContent($parentText)->first();
         $left = $parentNode->rgt;
-        Category::adjustIndexes($left);
-        return Category::init($content,$left, $parentNode->node_id);
+        //Category::adjustIndexes($left);
+        return Category::init($content, $parentNode->node_id);
     }
 
     /**

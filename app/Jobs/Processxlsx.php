@@ -3,10 +3,9 @@
 namespace App\Jobs;
 
 use App\CustomClasses\Excel;
-use App\CustomClasses\CategoryBuilder;
+use App\CustomClasses\Row;
 use App\CustomClasses\File;
 use App\CustomClasses\FTP;
-use App\Mail\ProcessingDone;
 use App\Notifications\Done;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -46,10 +45,8 @@ class Processxlsx implements ShouldQueue
         //Slice the first row as it contains category numbers.
         $rows = array_slice($rows, 1);
         foreach ($rows as $row) {
-            $rowData = Excel::getRowData($row);
-            foreach ($rowData as $data) {
-                CategoryBuilder::insert($data["content"], $data["parentText"]);
-            }
+            $row = new Row($row);
+            $row->processCells();
         }
         $this->done();
     }
