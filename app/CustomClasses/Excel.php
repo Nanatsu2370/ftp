@@ -2,19 +2,23 @@
 
 namespace App\CustomClasses;
 
-//Excel functions, uses SimpleXLSX to read.
+/**
+ * Handles Excel file operations.
+ */
 class Excel
 {
     /**
-     * Get All rows from xlsx path.
-     * @return xlsx->rows
+     * Get rows from an Excel file which specified on params.
+     * @param string $filename Path of the excel file.
+     * @return array Excel Rows
      */
-    static function getRows($path)
+    static function getRows($filename)
     {
-        $xlsx = new \SimpleXLSX($path);
+        $xlsx = new \SimpleXLSX($filename);
         if (!$xlsx->success())
             dd("Error:" . $xlsx->error());
 
-        return $xlsx->rows();
+        //Slice the first row as it contains category numbers.
+        return array_slice($xlsx->rows(), 1);
     }
 }

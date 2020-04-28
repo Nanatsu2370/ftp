@@ -2,18 +2,20 @@
 
 namespace App\Jobs;
 
+use App\Category;
 use App\CustomClasses\Excel;
 use App\CustomClasses\Row;
 use App\CustomClasses\File;
 use App\CustomClasses\FTP;
+
 use App\Notifications\Done;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
 class Processxlsx implements ShouldQueue
@@ -40,20 +42,26 @@ class Processxlsx implements ShouldQueue
      */
     public function handle()
     {
-        $rows = Excel::getRows($this->file);
+        $rows = Excel::getRows($this->filename);
 
-        //Slice the first row as it contains category numbers.
-        $rows = array_slice($rows, 1);
-        foreach ($rows as $row) {
-            $row = new Row($row);
-            $row->processCells();
+        foreach ($rows as $rowData)
+        {
+            $row = new Row($rowData);
+            foreach($row->cells as $cellData)
+            {
+                $parentId = Category::calculateId($cellData['parentText']);
+
+                $category = Category::init($cellData['content'],$parentId);
+                $category->save();
+            }
         }
         $this->done();
     }
 
     public function done(){
-        //Mail::to(env("MAIL_TO"))->queue(new ProcessingDone($this->filename));
         Notification::route('mail',env('MAIL_TO'))
-        ->notify(new Done($this->filename));
+            ->notify(new Done($this->filename));
+
+        //Category::truncate();
     }
 }

@@ -15,37 +15,41 @@ class Category extends Model
     protected $attributes = ['parent_Id' => 0];
 
     private static function calculateLeftRoot(){
-        $last_root_node = self::getLastRoot();
+        $last_root_node = self::where('parent_Id', 0)
+            ->orderBy('rgt', 'desc')
+            ->first();
 
         if (isset($last_root_node))
             return $last_root_node->rgt + 1;
         else
             return 1;
     }
-    private static function calculateLeft($parentId=0)
+    private static function calculateLeft($parent_Id)
     {
-         if ($parentId == 0)
+         if ($parent_Id == 0)
             return self::calculateLeftRoot();
-        echo $parentId;
-        $parentNode = Category::find($parentId);
+
+        $parentNode = Category::find($parent_Id);
         return $parentNode->rgt;
     }
-    //Seems like constructor has problems with Eloquent's static calls.
+    //Seems like constructor which has parameters, has problems with Eloquent's static calls.
     static function init($content,$parentId=0){
         $left = self::calculateLeft($parentId);
 
         $category = new Category;
         $category->content = $content;
+        $category->parent_Id = $parentId;
         $category->lft = $left;
         $category->rgt = $left + 1;
-        $category->parent_Id = $parentId;
         return $category;
     }
 
-    static function getLastRoot(){
-        return self::where('parent_Id', 0)
-            ->orderBy('rgt', 'desc')
-            ->first();
+    static function calculateId($parentText){
+        if ($parentText == "")
+            return 0;
+
+        return Category::where('content', $parentText)
+            ->first()->node_id;
     }
     static function adjustIndexes($limit){
         self::where('rgt', '>=', $limit)->increment('rgt', 2);
@@ -57,6 +61,13 @@ class Category extends Model
         return $data->toJson(JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
     public function save(array $options = []){
+        //Nullcheck
+        if (!isset($this->content) || !isset($this->parent_Id))
+            return;
+        //If node already exists, then we shouldn't add it.
+        if (self::where("content", $this->content)->exists())
+            return;
+
         self::adjustIndexes($this->lft);
         parent::save();
     }
