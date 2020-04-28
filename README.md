@@ -1,11 +1,11 @@
 # PixelProject
 A Hook project that grabs a file from FTP, Loads it into a DB and informs the admin.
 
-Kullanmadan önce <i>.env.example</i> adlı dosyanın içindeki şu alanları doldurmalısınız:
+Before using, please fill <i>.env.example</i> file, specifially line with following prefixes:
 <ul>
     <li>DB</li>
     <li>MAIL</li>
     <li>FTP</li>
 </ul>
 
-ve dosya adını <i>.env</i> olarak değiştirmelisiniz.
+and rename the file as <i>.env</i>.
