@@ -26,7 +26,7 @@ class File
      * @param string $base Base path of the files for auto-combining.
      * @return string
      * */
-    static function getRecentURL($files,$base="")
+    static function getRecentPath($files,$base="")
     {
         //initial date, 1970 Jan. Minimum date for increasing.
         $date = new \DateTime('@0');
@@ -39,7 +39,7 @@ class File
             $date = $tempDate;
             $recentFile = $file;
         }
-        return File::combinePath($base, $recentFile);
+        return self::combinePath($base, $recentFile);
     }
 
     /**
