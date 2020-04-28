@@ -30,9 +30,8 @@ class Processxlsx implements ShouldQueue
      */
     public function __construct()
     {
-        $ftp_basePath = "categories";
-        $files = FTP::getAllFiles($ftp_basePath);
-        $this->filename = File::getRecentURL($files,$ftp_basePath);
+        $files = FTP::getAllFiles(env('FTP_BASEPATH'));
+        $this->filename = File::getRecentPath($files, env('FTP_BASEPATH'));
         $this->file = FTP::buildFTPUrl($this->filename);
     }
     /**
@@ -42,7 +41,7 @@ class Processxlsx implements ShouldQueue
      */
     public function handle()
     {
-        $rows = Excel::getRows($this->filename);
+        $rows = Excel::getRows($this->file);
 
         foreach ($rows as $rowData)
         {
