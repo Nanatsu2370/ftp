@@ -12,7 +12,8 @@ use Illuminate\Support\Str;
 /* Generates a Root */
 
 $factory->state(Category::class, 'root', function () {
-    $category = CategoryBuilder::generateCategory(Str::random(5), "");
+
+    $category = Category::init(Str::random(5), 0);
     return [
         'content' => $category->content,
         'lft' => $category->lft,
@@ -22,23 +23,14 @@ $factory->state(Category::class, 'root', function () {
 });
 
 /* Generates a child node */
-$factory->state(Category::class, "node", function () {
+$factory->define(Category::class, function () {
+
     $randomParent = Category::all()->random();
-    $category = CategoryBuilder::generateCategory(Str::random(5), $randomParent->content);
+    $category = Category::init(Str::random(5), $randomParent->node_id);
     return [
         'content' => $category->content,
         'lft' => $category->lft,
         'rgt' => $category->rgt,
         'parent_Id' => $category->parent_Id
-    ];
-});
-
-/* Default values. */
-$factory->define(Category::class, function () {
-    return [
-        'content' => "",
-        'lft' => -2,
-        'rgt' => -1,
-        'parent_Id' => -1
     ];
 });
