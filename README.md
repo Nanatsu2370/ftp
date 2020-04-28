@@ -7,3 +7,5 @@ Kullanmadan önce <i>.env.example</i> adlı dosyanın içindeki şu alanları do
     <li>MAIL</li>
     <li>FTP</li>
 </ul>
+
+ve dosya adını <i>.env</i> olarak değiştirmelisiniz.
