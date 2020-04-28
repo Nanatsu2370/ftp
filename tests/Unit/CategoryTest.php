@@ -21,6 +21,10 @@ class CatgoryTest extends TestCase
         $this->assertTrue(true);
     }
 
+    /**
+     * Test if the database is working correctly.
+     * Add a root node.
+     */
     public function testDatabase(){
         factory(Category::class)->state("root")->create();
 
@@ -29,12 +33,17 @@ class CatgoryTest extends TestCase
         ]);
     }
 
+    /**
+     * Test if the worker/queue works correctly.
+     * Fake it and dispatch.
+    */
     public function testJobs(){
         Queue::fake();
         Processxlsx::dispatch();
         Queue::assertPushed(Processxlsx::class);
     }
     /**
+     * Test if the notification system works correctly
      * Also counts as mail, because its the only option for now.
      */
     public function testNotification(){

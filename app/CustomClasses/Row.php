@@ -1,10 +1,18 @@
 <?php
 namespace App\CustomClasses;
-use App\Category;
 
 class Row
 {
+    /**
+     * Cell values of the row.
+     */
     public $cells = [];
+
+    /**
+     * Creates a row instance, splits row data into cells.
+     * @param array $data Row data
+     * @return void
+     */
     public function __construct($data)
     {
         foreach ($data as $i=>$cell) {

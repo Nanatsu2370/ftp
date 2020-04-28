@@ -61,6 +61,7 @@ class Processxlsx implements ShouldQueue
         Notification::route('mail',env('MAIL_TO'))
             ->notify(new Done($this->filename));
 
+        //? Should we refresh the table for each file, so files did not merge.
         //Category::truncate();
     }
 }
