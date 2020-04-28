@@ -62,6 +62,6 @@ class Processxlsx implements ShouldQueue
             ->notify(new Done($this->filename));
 
         //? Should we refresh the table for each file, so files did not merge.
-        //Category::truncate();
+        Category::truncate();
     }
 }
